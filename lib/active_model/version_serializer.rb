@@ -73,7 +73,7 @@ module ActiveModel
     def self.version(version, superclass = ActiveModel::Serializer, &block)
       base_class = self
       vklass = Class.new(superclass) do
-        self.root(base_class._root) if superclass._root?
+        self.root(base_class._root) if superclass._root
         alias_method base_class._name.to_sym, :object
 
         singleton_class.class_eval do
@@ -81,6 +81,7 @@ module ActiveModel
             "(#{base_class.name} VERSION: #{version})"
           end
           alias inspect to_s
+          define_method(:name) { base_class.name }
         end
 
         define_singleton_method(:version_attributes) do |v, options = {}|
@@ -116,4 +117,3 @@ module ActiveModel
 
   end
 end
-
